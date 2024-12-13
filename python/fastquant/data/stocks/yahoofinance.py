@@ -37,6 +37,11 @@ def get_yahoo_data(symbol, start_date, end_date, dividends=True):
         "Volume": "volume",
         "Dividends": "dividend",
     }
+
+    # Multi-index dataframes are not supported in fastquant
+    if "Ticker" in df.columns.names:
+        df.columns = df.columns.droplevel("Ticker")
+
     if dividends:
         ticker = yf.Ticker(symbol)
         div_df = ticker.dividends
