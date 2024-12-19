@@ -289,8 +289,8 @@ class BaseStrategy(bt.Strategy):
     def next(self):
 
         # add dividend to cash
-        if self.invest_div and self.datadiv is not None:
-            self.broker.add_cash(self.datadiv)
+        if self.invest_div and self.datadiv is not None and self.datadiv.get()[0] != 0:
+            self.broker.add_cash(self.datadiv.get()[0])
 
         if self.add_cash_amount:
             if self.first_timepoint:
