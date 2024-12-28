@@ -33,7 +33,6 @@ def get_yahoo_data(symbol, start_date, end_date, dividends=True):
         "High": "high",
         "Low": "low",
         "Close": "close",
-        "Adj Close": "adj_close",
         "Volume": "volume",
         "Dividends": "dividend",
     }
@@ -41,6 +40,9 @@ def get_yahoo_data(symbol, start_date, end_date, dividends=True):
     # Multi-index dataframes are not supported in fastquant
     if "Ticker" in df.columns.names:
         df.columns = df.columns.droplevel("Ticker")
+
+    # "Adj Close" is missing from the recent versions of YFinance
+    df = df.drop(['Adj Close'], errors='ignore')
 
     if dividends:
         ticker = yf.Ticker(symbol)
@@ -59,7 +61,6 @@ def get_yahoo_data(symbol, start_date, end_date, dividends=True):
         "high",
         "low",
         "close",
-        "adj_close",
         "volume",
         "dividend",
     ]
